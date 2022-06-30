@@ -3,6 +3,7 @@ package com.dev.loja.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.dev.loja.domain.Produto;
@@ -12,7 +13,7 @@ import com.dev.loja.exception.ResourceNotFoundException;
 import com.dev.loja.repository.ProdutoRepository;
 
 
-
+@Service
 public class ProdutoService {
 	@Autowired
 	private ProdutoRepository produtoRepository;
