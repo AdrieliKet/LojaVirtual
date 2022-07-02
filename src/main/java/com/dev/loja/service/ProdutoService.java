@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.dev.loja.domain.Produto;
+import com.dev.loja.domain.ProdutoPreco;
 import com.dev.loja.exception.BadResourceException;
 import com.dev.loja.exception.ResourceAlreadyExistsException;
 import com.dev.loja.exception.ResourceNotFoundException;
+import com.dev.loja.repository.ProdutoPrecoRepository;
 import com.dev.loja.repository.ProdutoRepository;
 
 
@@ -17,6 +19,9 @@ import com.dev.loja.repository.ProdutoRepository;
 public class ProdutoService {
 	@Autowired
 	private ProdutoRepository produtoRepository;
+	
+	@Autowired 
+	private ProdutoPrecoRepository produtoPrecoRepository;
 	
 	private boolean existsById(Long id) {
 		return produtoRepository.existsById(id);
@@ -44,7 +49,15 @@ public class ProdutoService {
 			 if(produto.getId() != null && existsById(produto.getId())) {
 				throw new ResourceAlreadyExistsException("Produto com id: "+produto.getId()+" já existe"); 
 			 }
-		return produtoRepository.save(produto);	 
+			 
+			 Produto produtoNovo = produtoRepository.save(produto);
+			 
+			 ProdutoPreco produtoPreco = new ProdutoPreco();
+			 produtoPreco.setProduto(produtoNovo);
+			 produtoPreco.setValorCusto(produtoNovo.getValorCusto());
+			 produtoPreco.setValorVenda(produtoNovo.getValorVenda());
+			 
+			 return produtoNovo;	 
 		 } else {
 			 BadResourceException exc = new BadResourceException("Erro ao salvar produto");
 			 exc.addErrorMessages("Produto está vazio ou é nulo");
@@ -57,6 +70,11 @@ public class ProdutoService {
 			 if(!existsById(produto.getId())) {
 				 throw new ResourceNotFoundException("Produto não encontrado com o id: "+produto.getId());
 			 }
+			 ProdutoPreco produtoPreco = new ProdutoPreco();
+			 produtoPreco.setProduto(produto);
+			 produtoPreco.setValorCusto(produto.getValorCusto());
+			 produtoPreco.setValorVenda(produto.getValorVenda());
+			 
 			 produtoRepository.save(produto);
 		 } else {
 			 BadResourceException exc = new BadResourceException("Falha ao salvar o produto");
