@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -119,5 +120,13 @@ private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 			logger.error(ex.getMessage());
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage(), ex);
 		}
+	}
+	
+	//localhost:8080/api/produto/atualizarValorCategoria?percentual=5&idCategoria=1&tipoOperacao=%2B  acrescentar
+	//localhost:8080/api/produto/atualizarValorCategoria?percentual=5&idCategoria=1&tipoOperacao=%B  diminuir (ver no github do professor)
+	@GetMapping(path = "/atualizarValorCategoria")
+	public ResponseEntity<Void> atualizarValorProdutoCategoria(@RequestParam Double percentual, @RequestParam Long idCategoria, @RequestParam String tipoOperacao){
+		produtoService.atualizarValorProdutoCategoria(idCategoria, percentual, tipoOperacao);
+		return ResponseEntity.ok().build();
 	}
 }

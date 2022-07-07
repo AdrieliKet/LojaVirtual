@@ -1,5 +1,7 @@
 package com.dev.loja.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +15,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long>{
 	Page<Produto> findByProduto(String descricao, Pageable page);
 	
 	Page<Produto> findAll(Pageable pageable);
+	
+	@Query(nativeQuery = true, value="select p from Produto p where p.categoria.id=?1 ")
+	public List<Produto> buscarProdutosCategoria(Long idCategoria);
 }

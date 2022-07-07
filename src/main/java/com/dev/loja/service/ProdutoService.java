@@ -1,5 +1,7 @@
 package com.dev.loja.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +17,7 @@ import com.dev.loja.repository.ProdutoPrecoRepository;
 import com.dev.loja.repository.ProdutoRepository;
 
 
+
 @Service
 public class ProdutoService {
 	@Autowired
@@ -26,6 +29,7 @@ public class ProdutoService {
 	private boolean existsById(Long id) {
 		return produtoRepository.existsById(id);
 	}
+	
 	
 	public Produto findById(Long id) throws ResourceNotFoundException{
 		Produto produto = produtoRepository.findById(id).orElse(null);
@@ -82,6 +86,24 @@ public class ProdutoService {
 			 throw exc;
 		 }
 	 }
+	 
+	 public void atualizarValorProdutoCategoria(Long idCategoria, Double percentual, String tipoOperacao) {
+		 List<Produto> produtos = produtoRepository.buscarProdutosCategoria(idCategoria);
+		 for(Produto produto:produtos) {
+			 try {
+				 if(tipoOperacao == "+") {
+					produto.setValorVenda(produto.getValorVenda()*(1+(percentual/100)));
+					 
+				 }else {
+					produto.setValorVenda(produto.getValorVenda()*(1-(percentual/100)));
+				 }
+				update(produto);
+			} catch (BadResourceException | ResourceNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 }
+	 }
 		 
 		 public void deleteById(Long id) throws ResourceNotFoundException{
 			 if(!existsById(id)) {
@@ -94,4 +116,6 @@ public class ProdutoService {
 		 public Long count() {
 			 return produtoRepository.count();
 		 }
+		 
+		 
 }
