@@ -44,7 +44,7 @@ public class ProdutoService {
 	 }
 	 
 	 public Page<Produto> findAllByNome(String descricao, Pageable page){
-		 Page<Produto> produtos = produtoRepository.findByProduto(descricao, page);
+		 Page<Produto> produtos = produtoRepository.findByDescricao(descricao, page);
 		 return produtos;
 	 }
 	 
@@ -78,7 +78,6 @@ public class ProdutoService {
 			 produtoPreco.setProduto(produto);
 			 produtoPreco.setValorCusto(produto.getValorCusto());
 			 produtoPreco.setValorVenda(produto.getValorVenda());
-			 
 			 produtoRepository.save(produto);
 		 } else {
 			 BadResourceException exc = new BadResourceException("Falha ao salvar o produto");

@@ -1,31 +1,30 @@
 package com.dev.loja.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotBlank;
+
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import io.swagger.v3.oas.annotations.media.Schema;
  
 @Entity
 @Table(name = "permissao_usuario")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Getter
 @Setter
+@Data
 public class PermissaoUsuario implements Serializable {
  
     private static final long serialVersionUID = 1L;
@@ -33,14 +32,17 @@ public class PermissaoUsuario implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    
-    @Temporal(TemporalType.TIMESTAMP)  
-    private Date dataCadastro = new Date();
    
     @ManyToOne
     private Usuario usuario;
     
     @ManyToOne
     private Permissao permissao;   
+    
+    @CreationTimestamp
+	private Timestamp dataCadastro;
+	
+	@UpdateTimestamp
+	private Timestamp dataModificacao;
     
 }

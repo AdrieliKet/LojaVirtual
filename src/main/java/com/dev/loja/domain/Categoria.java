@@ -1,21 +1,20 @@
 package com.dev.loja.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,6 +23,7 @@ import lombok.Setter;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Getter
 @Setter
+@Data
 public class Categoria implements Serializable{
 	private static final long serialVersionUID = 4048798961366546485L;
 	
@@ -33,28 +33,10 @@ public class Categoria implements Serializable{
 	
 	private String descricao;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-    private Date dataCadastro = new Date();
-
+	@CreationTimestamp
+	private Timestamp dataCadastro;
 	
-	@ManyToOne
-	@JoinColumn(name = "idCategoria")
-	private Categoria categoria;
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	public String getDescricao() {
-		return descricao;
-	}
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-	
+	@UpdateTimestamp
+	private Timestamp dataModificacao;
 
 }

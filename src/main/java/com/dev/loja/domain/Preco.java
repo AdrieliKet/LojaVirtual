@@ -1,7 +1,7 @@
 package com.dev.loja.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,12 +9,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +25,7 @@ import lombok.Setter;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Getter
 @Setter
+@Data
 public class Preco implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -34,6 +37,9 @@ public class Preco implements Serializable{
 	@ManyToOne
 	private Produto produto;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-    private Date dataCadastro = new Date();
+	@CreationTimestamp
+	private Timestamp dataCadastro;
+	
+	@UpdateTimestamp
+	private Timestamp dataModificacao;
 }

@@ -1,7 +1,7 @@
 package com.dev.loja.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,20 +10,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 @Entity
 @Table(name = "produtos")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Getter
-@Setter
+@Data
 public class Produto implements Serializable{
 	private static final long serialVersionUID = 4048798961366546485L;
 	
@@ -44,41 +42,11 @@ public class Produto implements Serializable{
 	@JoinColumn(name = "idCategoria")
 	private Categoria categoria;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-    private Date dataCadastro = new Date();
+	@CreationTimestamp
+	private Timestamp dataCadastro;
 	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	public String getDescricao() {
-		return descricao;
-	}
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-	public Double getValorVenda() {
-		return valorVenda;
-	}
-	public void setValorVenda(Double valorVenda) {
-		this.valorVenda = valorVenda;
-	}
-	public Double getValorCusto() {
-		return valorCusto;
-	}
-	public void setValorCusto(Double valorCusto) {
-		this.valorCusto = valorCusto;
-	}
-	public Double getQuantidadeEstoque() {
-		return quantidadeEstoque;
-	}
-	public void setQuantidadeEstoque(Double quantidadeEstoque) {
-		this.quantidadeEstoque = quantidadeEstoque;
-	}
+	@UpdateTimestamp
+	private Timestamp dataModificacao;
 	
 
 }
